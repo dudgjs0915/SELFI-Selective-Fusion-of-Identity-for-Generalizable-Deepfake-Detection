@@ -1,0 +1,120 @@
+# log dir 
+log_dir: logs/evaluations/effnb4
+
+# model setting
+# pretrained: /home/zhiyuanyan/disfin/deepfake_benchmark/training/pretrained/xception-b5690688.pth   # path to a pre-trained model, if using one
+pretrained: ./training/pretrained/efficientnet-b4-6ed6700e.pth   # path to a pre-trained model, if using one
+# pretrained: false
+model_name: selfi   # model name
+backbone_name: clip  # backbone name [clip, efficientnetb4]
+
+
+face_model_name: selfi_iresnet100   # face model name
+face_model_pretrained: ./training/pretrained/ms1mv3_arcface_r100_fp16.pth   # path to a pre-trained face model, if using one
+
+#backbone setting
+backbone_config:
+  num_classes: 2
+  inc: 3
+  dropout: false
+  mode: false
+
+  IAFM: true
+  relevance_loss: false
+  cosine_diversity: false
+
+  use_identity_real_fake_head: true
+  fusion_method: weighted_sum # [bilinear, weighted_sum, concat, attention]
+  # bilinear: 쌍선형 융합을 사용합니다.
+  # weighted_sum: Relevance Score를 기반으로 가중합을 수행합니다. (아래 relevance_predictor 설정과 관련)
+  # concat: 두 feature 벡터를 단순히 연결합니다.
+  # attention: 어텐션 메커니즘을 사용하여 feature를 융합합니다.
+
+  relevance_predictor: concat # IF fusion_method == weighted_sum --> [concat, mlp]
+  # concat: EfficientNet feature와 Face Identity feature를 연결하여 Relevance Score를 예측합니다.
+  # mlp: EfficientNet feature만을 사용하여 MLP(Multi-Layer Perceptron)를 통해 Relevance Score를 예측합니다. (Face Identity feature는 사용되지 않습니다.)
+
+
+loss_func:
+  cls_loss: cross_entropy   # classification loss function
+  cosine_diversity_loss: cosine_diversity   # cosine similarity loss function
+  relevance_loss: idars_consistency_loss   # consistency loss function
+
+loss_weight:
+  cls_weight: 1.0 # weight for the classification loss
+  relevance_weight: 1.0 # weight for the method loss
+  identity_cls_weight: 1.0 # weight for the identity classification loss
+  cosine_diversity_weight: 1.0 # weight for the cossine similarity loss
+  delta: 1.0 # weight for the range loss
+  
+  mode: Original
+
+# dataset
+all_dataset: [FaceForensics++, FF-F2F, FF-DF, FF-FS, FF-NT, FaceShifter, DeepFakeDetection, Celeb-DF-v1, Celeb-DF-v2, DFDCP, DFDC, DeeperForensics-1.0, UADFV]
+train_dataset: [FF-NT]
+test_dataset: [FaceForensics++, FF-F2F, FF-DF, FF-FS, FF-NT]
+
+compression: c23  # compression-level for videos
+train_batchSize: 64   # training batch size
+test_batchSize: 512   # test batch size
+workers: 8   # number of data loading workers
+frame_num: {'train': 32, 'test': 32}   # number of frames to use per video in training and testing
+resolution: 224   # resolution of output image to network
+with_mask: false   # whether to include mask information in the input
+with_landmark: false   # whether to include facial landmark information in the input
+save_ckpt: true   # whether to save checkpoint
+save_feat: true   # whether to save features
+
+
+# data augmentation
+use_data_augmentation: true  # Add this flag to enable/disable data augmentation
+data_aug:
+  flip_prob: 0.5
+  rotate_prob: 0.5
+  rotate_limit: [-10, 10]
+  blur_prob: 0.5
+  blur_limit: [3, 7]
+  brightness_prob: 0.5
+  brightness_limit: [-0.1, 0.1]
+  contrast_limit: [-0.1, 0.1]
+  quality_lower: 40
+  quality_upper: 100
+
+# mean and std for normalization
+mean: [0.485, 0.456, 0.406]
+std: [0.229, 0.224, 0.225]
+
+# optimizer config
+optimizer:
+  # choose between 'adam' and 'sgd'
+  type: adam
+  adam:
+    lr: 0.00001  # learning rate
+    beta1: 0.9  # beta1 for Adam optimizer
+    beta2: 0.999 # beta2 for Adam optimizer
+    eps: 0.00000001  # epsilon for Adam optimizer
+    weight_decay: 0.0005  # weight decay for regularization
+    amsgrad: false
+  sgd:
+    lr: 0.0002  # learning rate
+    momentum: 0.9  # momentum for SGD optimizer
+    weight_decay: 0.0005  # weight decay for regularization
+
+# training config
+lr_scheduler: null   # learning rate scheduler
+nEpochs: 10   # number of epochs to train for
+start_epoch: 0   # manual epoch number (useful for restarts)
+save_epoch: 1   # interval epochs for saving models
+rec_iter: 100   # interval iterations for recording
+logdir: ./logs   # folder to output images and logs
+manualSeed: 1024   # manual seed for random number generation
+save_ckpt: false   # whether to save checkpoint
+
+losstype: null
+
+# metric
+metric_scoring: auc   # metric for evaluation (auc, acc, eer, ap)
+
+# cuda
+cuda: true   # whether to use CUDA acceleration
+cudnn: true   # whether to use CuDNN for convolution operations

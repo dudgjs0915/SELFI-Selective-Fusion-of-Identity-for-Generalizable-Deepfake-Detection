@@ -1,0 +1,25 @@
+﻿.idea
+*__pycache__*
+*.vscode*
+*.pyc
+*.pth
+*.pt
+*.dat
+
+preprocessing/dataset_json/*.json
+preprocessing/dataset_json_*
+datasets/*
+secrete_project_config.py
+
+training/config/detector_*/
+training/config/detector_*/*
+# Keep the SELFI config tracked (it lives under a detector_* dir)
+!training/config/detector_selfi/
+!training/config/detector_selfi/*
+
+logs/
+logs/*
+
+wandb/
+
+analysis/cartography_results

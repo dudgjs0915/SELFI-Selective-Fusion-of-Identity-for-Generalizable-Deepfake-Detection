@@ -1,0 +1,70 @@
+mode: test
+lmdb: false
+rgb_dir: './datasets/rgb'
+lmdb_dir:  './datasets/lmdb'
+dataset_json_folder: './preprocessing/dataset_json'
+label_dict:
+  # DFD
+  DFD_fake: 1
+  DFD_real: 0
+  # FF++ + FaceShifter(FF-real+FF-FH)
+  FF-SH: 1
+  FF-F2F: 1
+  FF-DF: 1
+  FF-FS: 1
+  FF-NT: 1
+  FF-FH: 1
+  FF-real: 0
+  # CelebDF
+  CelebDFv1_real: 0
+  CelebDFv1_fake: 1
+  CelebDFv2_real: 0
+  CelebDFv2_fake: 1
+  # DFDCP
+  DFDCP_Real: 0
+  DFDCP_FakeA: 1
+  DFDCP_FakeB: 1
+  # DFDC
+  DFDC_Fake: 1
+  DFDC_Real: 0
+  # DeeperForensics-1.0
+  DF_fake: 1
+  DF_real: 0
+  # UADFV
+  UADFV_Fake: 1
+  UADFV_Real: 0
+  # Roop
+  roop_Real: 0
+  roop_Fake: 1
+
+  # e4s
+  e4s_Real: 0
+  e4s_Fake: 1
+
+  # blendface
+  blendface_Real: 0
+  blendface_Fake: 1
+
+  # facedancer
+  facedancer_Real: 0
+  facedancer_Fake: 1
+
+  # fsgan
+  fsgan_Real: 0
+  fsgan_Fake: 1
+
+  # inswap
+  inswap_Real: 0
+  inswap_Fake: 1
+
+  # mobileswap
+  mobileswap_Real: 0
+  mobileswap_Fake: 1
+
+  # simswap
+  simswap_Real: 0
+  simswap_Fake: 1
+
+  # uniface
+  uniface_Real: 0
+  uniface_Fake: 1
